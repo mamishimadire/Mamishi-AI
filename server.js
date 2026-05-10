@@ -1,6 +1,5 @@
-require("dotenv").config();
-
 const http = require("http");
+require("./load-env");
 const fs = require("fs");
 const fsp = require("fs/promises");
 const os = require("os");
@@ -13,12 +12,15 @@ const Tesseract = require("tesseract.js");
 const APP_NAME = "MAMISHI AI";
 const AUTHOR_NAME = "Mamishi Tonny Madire";
 const PORT = Number(process.env.PORT || 5000);
+const DEFAULT_PYTHON_BIN = path.join(os.homedir(), "tools", "python312-embed", "python.exe");
 
 const OLLAMA_URL = process.env.OLLAMA_URL || "http://127.0.0.1:11434/api/chat";
 const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-1.5-flash";
 const GROQ_KEY = process.env.GROQ_API_KEY || "";
 const GROQ_MODEL = process.env.GROQ_MODEL || "llama-3.3-70b-versatile";
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
+const GROQ_STT_URL = "https://api.groq.com/openai/v1/audio/transcriptions";
+const GROQ_STT_MODEL = process.env.GROQ_STT_MODEL || "whisper-large-v3-turbo";
 const TAVILY_KEY = process.env.TAVILY_API_KEY || "";
 const tavilyClient = TAVILY_KEY ? tavily({ apiKey: TAVILY_KEY }) : null;
 
@@ -49,6 +51,21 @@ const MODELS = {
   local: process.env.OLLAMA_MODEL_LOCAL || "llama3.2",
 };
 
+function resolvePythonBin(value) {
+  const normalized = String(value || "").trim();
+  if (normalized && (normalized.includes("\\") || normalized.includes("/") || normalized.endsWith(".exe"))) {
+    if (fs.existsSync(normalized)) {
+      return normalized;
+    }
+  }
+
+  if (fs.existsSync(DEFAULT_PYTHON_BIN)) {
+    return DEFAULT_PYTHON_BIN;
+  }
+
+  return normalized || "python";
+}
+
 const BS = {
   gemini: { on: GEMINI_KEYS.length > 0, fails: 0, last: 0, cool: 60_000 },
   groq: { on: Boolean(GROQ_KEY), fails: 0, last: 0, cool: 30_000 },
@@ -61,7 +78,7 @@ const TEMPLATE_PATH = path.join(__dirname, "templates", "index.html");
 const CORRECTION_MEMORY_PATH = path.join(__dirname, "correction-memory.json");
 const ASSISTANT_PREFERENCES_PATH = path.join(__dirname, "assistant-preferences.json");
 const MEMORY_PY_PATH = path.join(__dirname, "memory.py");
-const PYTHON_BIN = process.env.PYTHON_BIN || path.join(os.homedir(), "tools", "python312-embed", "python.exe");
+const PYTHON_BIN = resolvePythonBin(process.env.PYTHON_BIN);
 
 const PROJECTS = {
   general: path.join(AGENT_WORKDIR, "general"),
@@ -264,12 +281,15 @@ function resolvePath(project = "general", inputPath = "") {
   return path.resolve(path.isAbsolute(inputPath) ? inputPath : path.join(base, inputPath));
 }
 
-function buildSystemPrompt(project, backend) {
+function buildSystemPrompt(project, backend, voiceContext = null) {
   const projectName = normalizeProject(project);
   const workdir = getDir(projectName);
   const assistantPreferences = loadAssistantPreferences();
   const preferencesText = assistantPreferences.length
     ? `\nStored response preferences:\n${assistantPreferences.map(item => `- ${item}`).join("\n")}`
+    : "";
+  const voicePrompt = voiceContext?.preferredOutputLanguage
+    ? `\nVoice interaction guidance:\n- The user came in through voice input.\n- Reply in ${voiceContext.preferredOutputLanguage} unless the user clearly asks for another language.\n- Keep the wording natural for speech and easy to listen to.\n- If you are unsure about a translation detail, say so instead of forcing a wrong translation.${voiceContext.processingText ? `\n- For processing accuracy, the user's meaning can be understood as: ${voiceContext.processingText}` : ""}`
     : "";
   return `You are ${APP_NAME}, a personal AI created for ${AUTHOR_NAME}.
 You are fast, practical, clear, and adaptive.
@@ -309,7 +329,7 @@ Behaviour:
 - Do not fabricate images, maps, files, or links. Only show a markdown image if you have a real image URL. If you need to show a map, prefer a real live map link or an HTML artifact.
 - File operations run inside: ${workdir}
 - For HTML output wrap entire document in <<<HTML_ARTIFACT>>>...<<<END_ARTIFACT>>>.
-- Use markdown when useful.${preferencesText}`;
+- Use markdown when useful.${preferencesText}${voicePrompt}`;
 }
 
 function shouldUseGemini(hasFiles, fileTypes) {
@@ -359,7 +379,153 @@ function parseBody(req) {
 
 async function loadIndexHtml() {
   const template = await fsp.readFile(TEMPLATE_PATH, "utf8");
-  return template.replaceAll("{{ app_name }}", APP_NAME).replaceAll("{{ author_name }}", AUTHOR_NAME);
+  const voiceApiUrl = `${process.env.API_SCHEME || "http"}://127.0.0.1:${Number(process.env.API_PORT || 5001)}`;
+  return template
+    .replaceAll("{{ app_name }}", APP_NAME)
+    .replaceAll("{{ author_name }}", AUTHOR_NAME)
+    .replaceAll("{{ voice_api_url }}", voiceApiUrl);
+}
+
+function decodeBase64Payload(value) {
+  const normalized = String(value || "").trim();
+  if (!normalized) return Buffer.alloc(0);
+  const base64 = normalized.includes(",") ? normalized.split(",").pop() : normalized;
+  return Buffer.from(base64, "base64");
+}
+
+function pickVoiceReplyLanguage(languageCode, languageName) {
+  const code = String(languageCode || "").trim().toLowerCase();
+  const name = String(languageName || "").trim().toLowerCase();
+  if (!code && !name) return null;
+  if (code.startsWith("en") || name.includes("english")) return null;
+  if (code === "nso" || name.includes("sepedi") || name.includes("northern sotho")) {
+    return "Sepedi";
+  }
+  if (name) {
+    return languageName;
+  }
+  return languageCode;
+}
+
+function buildVoiceContext(voice = {}) {
+  if (!voice || !voice.fromVoice) return null;
+  const preferredOutputLanguage = String(
+    voice.preferredOutputLanguage || pickVoiceReplyLanguage(voice.inputLanguageCode, voice.inputLanguageName) || ""
+  ).trim();
+  return {
+    fromVoice: true,
+    inputLanguageCode: String(voice.inputLanguageCode || "").trim(),
+    inputLanguageName: String(voice.inputLanguageName || "").trim(),
+    preferredOutputLanguage,
+    processingText: String(voice.processingText || "").trim().slice(0, 1200),
+  };
+}
+
+async function transcribeAudioWithGroq({ audioBase64, mimeType, filename }) {
+  if (!GROQ_KEY) {
+    return { error: "Voice transcription is unavailable because Groq is not configured.", status: 503 };
+  }
+
+  const audioBuffer = decodeBase64Payload(audioBase64);
+  if (!audioBuffer.length) {
+    return { error: "No audio data received.", status: 400 };
+  }
+
+  const form = new FormData();
+  form.append("model", GROQ_STT_MODEL);
+  form.append("response_format", "verbose_json");
+  form.append("temperature", "0");
+  form.append("prompt", "The speaker may use Sepedi (Northern Sotho), English, or a mix of both. Preserve names accurately.");
+  form.append("file", new Blob([audioBuffer], { type: mimeType || "audio/webm" }), filename || "voice.webm");
+
+  const response = await fetch(GROQ_STT_URL, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${GROQ_KEY}` },
+    body: form,
+  });
+
+  const raw = await response.text();
+  if (!response.ok) {
+    return {
+      error: response.status === 429
+        ? "Voice transcription is temporarily unavailable because the speech service hit its limit."
+        : "Voice transcription failed.",
+      detail: raw.slice(0, 500),
+      status: response.status,
+    };
+  }
+
+  let payload = {};
+  try {
+    payload = raw ? JSON.parse(raw) : {};
+  } catch {
+    payload = { text: raw };
+  }
+
+  const languageCode = String(payload.language || "").trim();
+  const replyLanguage = pickVoiceReplyLanguage(languageCode, payload.language || "");
+  return {
+    text: String(payload.text || "").trim(),
+    languageCode,
+    languageName: String(payload.language || "").trim(),
+    preferredOutputLanguage: replyLanguage,
+  };
+}
+
+async function speakWithGtts(text, requestedLanguage) {
+  const cleanText = String(text || "").trim();
+  if (!cleanText) {
+    return { error: "No text to speak.", status: 400 };
+  }
+
+  const requested = String(requestedLanguage || "").trim().toLowerCase();
+  const languageCode = requested === "sepedi" ? "nso" : requested.startsWith("english") ? "en" : requested || "en";
+  const script = `
+from io import BytesIO
+import base64
+import json
+try:
+    from gtts import gTTS
+    from gtts.lang import tts_langs
+    lang = ${JSON.stringify(languageCode)}
+    langs = tts_langs()
+    if lang not in langs:
+        print(json.dumps({"supported": False, "language": lang}))
+    else:
+        fp = BytesIO()
+        tts = gTTS(text=${JSON.stringify(cleanText)}, lang=lang, tld="co.za" if lang == "en" else "com")
+        tts.write_to_fp(fp)
+        print(json.dumps({
+            "supported": True,
+            "language": lang,
+            "audio_base64": base64.b64encode(fp.getvalue()).decode("ascii")
+        }))
+except Exception as exc:
+    print(json.dumps({"supported": False, "error": str(exc)}))
+`;
+  const result = await runPy(script, AGENT_WORKDIR);
+  try {
+    const payload = JSON.parse(result.stdout.trim() || "{}");
+    if (!payload.supported) {
+      return {
+        supported: false,
+        language: languageCode,
+        reason: payload.error || `gTTS does not support ${requestedLanguage || languageCode}.`,
+      };
+    }
+    return {
+      supported: true,
+      language: payload.language,
+      audioBase64: payload.audio_base64,
+      mimeType: "audio/mpeg",
+    };
+  } catch {
+    return {
+      supported: false,
+      language: languageCode,
+      reason: result.stderr.trim() || "Text-to-speech failed.",
+    };
+  }
 }
 
 function loadCorrectionMemory() {
@@ -1488,68 +1654,66 @@ function isFounderQuery(messages) {
 }
 
 function shouldAutoSearch(messages) {
-  if (!tavilyClient && !BS.tavily.on) return false;
   if (isFounderQuery(messages)) return false;
 
-  const text = getEffectiveUserText(messages).toLowerCase();
-  if (!text) return false;
-  if (isCorrectionMessage(text) && hasDetailedUserContext(text)) return false;
+  const text = String(getEffectiveUserText(messages) || "").trim();
+  const lower = text.toLowerCase();
+  if (!lower) return false;
 
-  const entityLookup = [
-    "who is",
-    "who are",
-    "who was",
-    "who were",
-    "tell me about",
-    "what is",
-    "what are",
-    "when did",
-    "when was",
-    "when is",
-    "where is",
-    "where are",
-    "how much is",
-    "how many",
-    "what happened",
-    "what happened to",
-    "define ",
-    "explain ",
-  ].some(term => text.startsWith(term) || text.includes(" " + term));
+  if (isCorrectionMessage(lower) && hasDetailedUserContext(text)) return false;
 
-  if (entityLookup) return true;
+  const liveKeywords = [
+    "latest", "current", "today", "tonight", "this week", "this month", "this year",
+    "recent", "just happened", "breaking", "right now", "live",
+    "result", "results", "score", "scores", "standings", "fixtures", "match", "game",
+    "price", "prices", "rate", "rates", "exchange", "convert", "currency",
+    "usd", "zar", "eur", "gbp", "jpy", "rand", "dollar", "euro", "pound",
+    "stock", "shares", "market", "nasdaq", "jse", "crypto", "bitcoin", "ethereum",
+    "weather", "forecast", "temperature", "rain", "humidity",
+    "news", "update", "updates", "announcement", "report", "release", "statement",
+    "draw", "jackpot", "lotto", "loto", "powerball", "winning numbers",
+    "election", "vote", "votes", "poll", "polls", "result",
+  ];
+  if (liveKeywords.some(keyword => lower.includes(keyword))) return true;
 
-  return [
-    "latest",
-    "current",
-    "today",
-    "tonight",
-    "recent",
-    "result",
-    "results",
-    "score",
-    "scores",
-    "price",
-    "prices",
-    "weather",
-    "news",
-    "update",
-    "updates",
-    "exchange",
-    "rate",
-    "rates",
-    "conversion",
-    "convert",
-    "currency",
-    "usd",
-    "zar",
-    "eur",
-    "gbp",
-    "draw",
-    "jackpot",
-    "lotto",
-    "loto",
-    "powerball",
-  ].some(term => text.includes(term));
+  const questionPatterns = [
+    /^who (is|are|was|were)\b/i,
+    /^what (is|are|was|were|does|do|did|happened to)\b/i,
+    /^where (is|are|was|were)\b/i,
+    /^when (did|was|is|are|will|does)\b/i,
+    /^how (does|do|did|is|are|was|were|much|many|long|far|old)\b/i,
+    /^why (is|are|was|were|did|does|do)\b/i,
+    /^tell me about\b/i,
+    /^explain\b/i,
+    /^define\b/i,
+    /^describe\b/i,
+    /^what happened\b/i,
+    /^do you know\b/i,
+    /^can you find\b/i,
+    /^search (for)?\b/i,
+    /^find (information|info|details|out)?\b/i,
+    /^look up\b/i,
+    /^google\b/i,
+    /^is (it|there|he|she|that|this|the)\b/i,
+    /^are (there|they|these|those)\b/i,
+    /^has\b/i,
+    /^have\b/i,
+    /^did\b/i,
+    /^does\b/i,
+  ];
+  if (questionPatterns.some(pattern => pattern.test(lower))) return true;
+
+  const properNounPattern = /\b[A-Z][a-z]{1,20}(?:\s+[A-Z][a-z]{1,20})+\b/;
+  const selfReferencePattern = /^(I |I'm |I've |My |We |Our )/;
+  if (
+    properNounPattern.test(text) &&
+    !selfReferencePattern.test(text) &&
+    text.length > 5
+  ) return true;
+
+  if (tavilyClient && lower.endsWith("?") && text.length > 10) return true;
+
+  return false;
 }
 
 function buildSearchQuery(messages) {
@@ -2274,6 +2438,7 @@ async function handleChat(req, res) {
   const rawMessages = Array.isArray(body.messages) ? body.messages : [];
   const project = normalizeProject(body.project || "general");
   const modelKey = Object.prototype.hasOwnProperty.call(MODELS, body.model) ? body.model : "fast";
+  const voiceContext = buildVoiceContext(body.voice);
 
   if (!rawMessages.length) {
     sendJson(res, 400, { error: "No messages provided" });
@@ -2287,7 +2452,7 @@ async function handleChat(req, res) {
   });
 
   try {
-    const baseSystemPrompt = buildSystemPrompt(project, "auto");
+    const baseSystemPrompt = buildSystemPrompt(project, "auto", voiceContext);
     const messages = [
       { role: "system", content: baseSystemPrompt },
       ...rawMessages.map(message => ({
@@ -2368,6 +2533,49 @@ async function handleChat(req, res) {
   }
 }
 
+async function handleVoiceTranscribe(req, res) {
+  const body = await parseBody(req);
+  const result = await transcribeAudioWithGroq({
+    audioBase64: body.audio_base64,
+    mimeType: body.mime_type,
+    filename: body.filename,
+  });
+
+  if (result.error) {
+    sendJson(res, result.status || 500, { error: result.error });
+    return;
+  }
+
+  sendJson(res, 200, {
+    text: result.text,
+    language_code: result.languageCode,
+    language_name: result.languageName,
+    preferred_output_language: result.preferredOutputLanguage,
+  });
+}
+
+async function handleVoiceSpeak(req, res) {
+  const body = await parseBody(req);
+  const result = await speakWithGtts(body.text, body.language);
+
+  if (!result.supported) {
+    sendJson(res, 200, {
+      supported: false,
+      fallback: "browser",
+      language: result.language,
+      reason: result.reason,
+    });
+    return;
+  }
+
+  sendJson(res, 200, {
+    supported: true,
+    mime_type: result.mimeType,
+    audio_base64: result.audioBase64,
+    language: result.language,
+  });
+}
+
 const server = http.createServer(async (req, res) => {
   try {
     const url = new URL(req.url, `http://${req.headers.host}`);
@@ -2390,6 +2598,11 @@ const server = http.createServer(async (req, res) => {
           ollama: { available: true, ready: ready("ollama"), models: MODELS },
           tavily: { available: BS.tavily.on, ready: ready("tavily") },
         },
+        voice: {
+          transcription: { available: Boolean(GROQ_KEY), model: GROQ_STT_MODEL },
+          tts: { available: true, engine: "gTTS-with-browser-fallback" },
+          python: PYTHON_BIN,
+        },
         memory: memoryStatus,
       });
       return;
@@ -2411,6 +2624,16 @@ const server = http.createServer(async (req, res) => {
 
     if (req.method === "POST" && url.pathname === "/chat") {
       await handleChat(req, res);
+      return;
+    }
+
+    if (req.method === "POST" && url.pathname === "/voice/transcribe") {
+      await handleVoiceTranscribe(req, res);
+      return;
+    }
+
+    if (req.method === "POST" && url.pathname === "/voice/speak") {
+      await handleVoiceSpeak(req, res);
       return;
     }
 

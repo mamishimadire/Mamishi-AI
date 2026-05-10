@@ -1,3 +1,4 @@
+[ENV] .env loaded
 
 MAMISHI AI -> http://localhost:5000
 
@@ -7,14 +8,17 @@ SMART ROUTING:
   Tavily -> automatic web search for current/live questions
 
 Backends:
-  Gemini : gemini-1.5-flash (1 key(s), standby only)
-  Groq   : llama-3.3-70b-versatile
+  Gemini : not configured
+  Groq   : not configured
   Ollama : gpt-oss:120b-cloud
 
-Tavily   : enabled
+Tavily   : not configured
 File reading:
   Groq   -> PDFs via PyMuPDF, images via pytesseract OCR
   Ollama -> same as Groq
 Optional Python deps: pip install pymupdf pytesseract pillow
 Workspace: C:\Users\Mamishi.Madire\mamishi-ai-workspace
 
+[CHAT] Done via: ollama
+[CHAT] Done via: ollama
+[CHAT] Done via: ollama

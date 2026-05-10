@@ -308,6 +308,187 @@
       line-height: 1.5;
       color: var(--muted);
     }
+    .voice-panel-body {
+      padding: 16px 20px;
+      overflow-y: auto;
+      flex: 1;
+      display: grid;
+      gap: 12px;
+    }
+    .voice-select,
+    .voice-textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--surface);
+      color: var(--text);
+      font: inherit;
+      font-size: 13px;
+      padding: 10px 12px;
+      outline: none;
+    }
+    .voice-select:focus,
+    .voice-textarea:focus { border-color: var(--success); }
+    .voice-textarea {
+      min-height: 90px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+    .voice-mic-btn {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--text);
+      border-radius: 16px;
+      padding: 18px 16px;
+      font: inherit;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, transform 0.15s;
+    }
+    .voice-mic-btn:hover { background: var(--surface-2); border-color: var(--surface-3); }
+    .voice-mic-btn.listening {
+      background: rgba(16,163,127,0.14);
+      border-color: rgba(16,163,127,0.5);
+      color: var(--success);
+    }
+    .voice-inline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .voice-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+    .voice-toggle input { accent-color: var(--success); }
+    .voice-status-box {
+      min-height: 56px;
+      white-space: pre-wrap;
+      font-family: Consolas, monospace;
+      font-size: 11px;
+      line-height: 1.5;
+      color: var(--muted);
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 12px;
+    }
+    .voice-caption {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .voice-mode-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 8px 16px;
+      background: rgba(255,255,255,0.02);
+      border-bottom: 1px solid var(--line);
+      flex-shrink: 0;
+      min-height: 52px;
+      flex-wrap: wrap;
+    }
+    .voice-mode-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--muted);
+      font: inherit;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 500;
+    }
+    .voice-mode-btn:hover { border-color: var(--muted); color: var(--text); }
+    .voice-mode-btn.active {
+      background: #f28c38;
+      border-color: #f28c38;
+      color: #fff;
+      box-shadow: 0 0 18px rgba(242,140,56,0.35);
+    }
+    .voice-mode-btn svg { width: 15px; height: 15px; }
+    .voice-mode-sep {
+      width: 1px;
+      height: 16px;
+      background: var(--line);
+    }
+    .handsfree-ring {
+      display: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #fff;
+      font-size: 18px;
+      background: linear-gradient(135deg, #f28c38, #c05a00);
+      box-shadow: 0 0 0 0 rgba(242,140,56,0.45);
+      animation: ringPulse 2s infinite;
+    }
+    .handsfree-ring.visible { display: inline-flex; }
+    .handsfree-ring.listening {
+      background: linear-gradient(135deg, #ef4444, #b91c1c);
+      animation: ringPulseRed 1s infinite;
+    }
+    .handsfree-ring.speaking {
+      background: linear-gradient(135deg, #10a37f, #065f46);
+      animation: ringPulseGreen 1.5s infinite;
+    }
+    @keyframes ringPulse {
+      0%   { box-shadow: 0 0 0 0 rgba(242,140,56,0.45); }
+      70%  { box-shadow: 0 0 0 14px rgba(242,140,56,0); }
+      100% { box-shadow: 0 0 0 0 rgba(242,140,56,0); }
+    }
+    @keyframes ringPulseRed {
+      0%   { box-shadow: 0 0 0 0 rgba(239,68,68,0.55); }
+      70%  { box-shadow: 0 0 0 16px rgba(239,68,68,0); }
+      100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); }
+    }
+    @keyframes ringPulseGreen {
+      0%   { box-shadow: 0 0 0 0 rgba(16,163,127,0.45); }
+      70%  { box-shadow: 0 0 0 16px rgba(16,163,127,0); }
+      100% { box-shadow: 0 0 0 0 rgba(16,163,127,0); }
+    }
+    .handsfree-status {
+      min-width: 96px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .handsfree-status.listening { color: #ef4444; font-weight: 600; }
+    .handsfree-status.speaking { color: #10a37f; font-weight: 600; }
+    .speak-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 10px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--muted);
+      font-size: 11px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+    .speak-btn:hover { color: var(--text); border-color: var(--muted); }
+    .speak-btn.speaking { color: var(--success); border-color: var(--success); }
+    .speak-btn svg { width: 12px; height: 12px; }
 
     .main { flex: 1; min-width: 0; display: flex; flex-direction: column; background: var(--bg); }
 
@@ -580,6 +761,8 @@
       #file-preview-bar-empty { width: calc(100vw - 24px); }
       .bubble { max-width: 100%; font-size: 14px; }
       .msg-wrap { padding: 0 12px; }
+      .voice-mode-bar { justify-content: flex-start; padding-inline: 12px; }
+      .voice-mode-sep { display: none; }
     }
   </style>
 </head>
@@ -631,6 +814,52 @@
   </div>
 </div>
 
+<div class="search-overlay" id="voice-overlay" onclick="closeVoiceIfOutside(event)">
+  <div class="memory-panel">
+    <div class="memory-header">
+      <div class="memory-title">Voice (any language)</div>
+      <button class="search-close" onclick="closeVoiceModal()">x</button>
+    </div>
+    <div class="voice-panel-body">
+      <div class="memory-label">Choose the language you want to speak and hear back.</div>
+      <select class="voice-select" id="voice-language-select">
+        <option value="auto">Auto-detect from microphone</option>
+        <option value="en">English</option>
+        <option value="nso">Sepedi (Northern Sotho)</option>
+        <option value="zu">isiZulu</option>
+        <option value="xh">isiXhosa</option>
+        <option value="st">Sesotho</option>
+        <option value="tn">Setswana</option>
+        <option value="af">Afrikaans</option>
+        <option value="ts">Xitsonga</option>
+        <option value="ss">siSwati</option>
+        <option value="ve">Tshivenda</option>
+        <option value="nr">isiNdebele</option>
+        <option value="sw">Swahili</option>
+        <option value="fr">French</option>
+        <option value="pt">Portuguese</option>
+        <option value="ar">Arabic</option>
+        <option value="hi">Hindi</option>
+        <option value="zh">Chinese</option>
+        <option value="es">Spanish</option>
+        <option value="de">German</option>
+      </select>
+      <button class="voice-mic-btn" id="voice-panel-mic" onclick="handleVoicePanelRecord()">Start microphone</button>
+      <div class="voice-inline">
+        <label class="voice-toggle"><input type="checkbox" id="voice-auto-listen"> Auto-listen</label>
+        <label class="voice-toggle"><input type="checkbox" id="voice-auto-speak" checked> Auto-speak</label>
+      </div>
+      <textarea class="voice-textarea" id="voice-transcript" placeholder="Transcript appears here. You can also edit it before sending."></textarea>
+      <div class="voice-status-box" id="voice-panel-status">Voice panel ready. Start the voice server on port 5001 for multilingual transcription.</div>
+      <div class="voice-caption">If the separate voice server is offline, the panel falls back to the main chat voice path where possible.</div>
+    </div>
+    <div class="memory-actions">
+      <button class="memory-action-btn" onclick="checkVoiceServer()">Check voice server</button>
+      <button class="memory-action-btn primary" onclick="sendVoicePanelTranscript()">Send transcript</button>
+    </div>
+  </div>
+</div>
+
 <aside class="sidebar">
   <div class="sidebar-top">
     <button class="icon-btn" title="{{ app_name }}">
@@ -654,6 +883,11 @@
   <button class="sidebar-btn" onclick="openMemoryModal()">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4H20v14.5A1.5 1.5 0 0 0 18.5 17H6.5A2.5 2.5 0 0 0 4 19.5v-13Z"/><path d="M6.5 4A2.5 2.5 0 0 0 4 6.5V20"/><path d="M8 8h8"/><path d="M8 12h8"/></svg>
     <span>Memory &amp; Knowledge</span>
+  </button>
+
+  <button class="sidebar-btn" onclick="openVoiceModal()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/><path d="M20 4l-2 2"/><path d="M4 4l2 2"/></svg>
+    <span>Voice (any language)</span>
   </button>
 
   <div class="sidebar-divider"></div>
@@ -697,6 +931,20 @@
       <span class="count-chip" id="ct-ollama">R:0</span>
       <span class="count-chip" id="ct-tavily">T:0</span>
     </div>
+  </div>
+
+  <div class="voice-mode-bar" id="voice-mode-bar">
+    <button class="voice-mode-btn" id="tts-toggle" onclick="toggleTTS()" title="Read AI replies aloud">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+      <span id="tts-toggle-label">Auto-speak</span>
+    </button>
+    <div class="voice-mode-sep"></div>
+    <button class="voice-mode-btn" id="handsfree-toggle" onclick="toggleHandsFree()" title="Speak and let AI answer aloud continuously">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      <span id="handsfree-toggle-label">Hands-free</span>
+    </button>
+    <button class="handsfree-ring" id="handsfree-ring" onclick="stopHandsFree()" title="Stop hands-free mode">🎤</button>
+    <div class="handsfree-status" id="handsfree-status"></div>
   </div>
 
   <div class="content-shell">
@@ -774,6 +1022,7 @@ const MAX_MESSAGES_PER_SESSION = 16;
 const MAX_ASSISTANT_CHARS = 6000;
 const MAX_USER_CHARS = 2000;
 const SHOW_TOOL_TRACES = false;
+const VOICE_API_BASE = "{{ voice_api_url }}";
 
 let chatHistory    = loadHistory();
 let currentSession = null;
@@ -784,6 +1033,21 @@ let finalTx        = "";
 let pendingFiles   = [];
 let currentProj    = "general";
 let currentModel   = "fast";
+let mediaRecorder  = null;
+let mediaChunks    = [];
+let currentVoiceContext = null;
+let pendingSpokenReply = null;
+let voicePanelRecorder = null;
+let voicePanelChunks = [];
+let voicePanelListening = false;
+let lastVoicePanelContext = null;
+let ttsEnabled = false;
+let handsFreeMode = false;
+let isBrowserSpeaking = false;
+let currentSpeechUtterance = null;
+let currentSpeechBubble = null;
+let preferredSpeechVoice = null;
+let handsFreeRestartTimer = null;
 
 const chatEl        = document.getElementById("chat");
 const emptyEl       = document.getElementById("empty-state");
@@ -798,6 +1062,16 @@ const recentsEmpty  = document.getElementById("recents-empty");
 const footerNote    = document.getElementById("footer-note");
 const memoryFolderInput = document.getElementById("memory-folder-input");
 const memoryStatusEl = document.getElementById("memory-status");
+const voiceLanguageSelect = document.getElementById("voice-language-select");
+const voiceTranscriptEl = document.getElementById("voice-transcript");
+const voicePanelStatusEl = document.getElementById("voice-panel-status");
+const voicePanelMicBtn = document.getElementById("voice-panel-mic");
+const voiceAutoListenEl = document.getElementById("voice-auto-listen");
+const voiceAutoSpeakEl = document.getElementById("voice-auto-speak");
+const ttsToggleLabel = document.getElementById("tts-toggle-label");
+const handsfreeToggleLabel = document.getElementById("handsfree-toggle-label");
+const handsfreeRing = document.getElementById("handsfree-ring");
+const handsfreeStatus = document.getElementById("handsfree-status");
 
 function loadHistory() {
   try {
@@ -1070,12 +1344,22 @@ function openMemoryModal() {
   setTimeout(() => memoryFolderInput?.focus(), 50);
 }
 
+function openVoiceModal() {
+  document.getElementById("voice-overlay").classList.add("open");
+  checkVoiceServer();
+  setTimeout(() => voiceLanguageSelect?.focus(), 50);
+}
+
 function closeSearch() {
   document.getElementById("search-overlay").classList.remove("open");
 }
 
 function closeMemoryModal() {
   document.getElementById("memory-overlay").classList.remove("open");
+}
+
+function closeVoiceModal() {
+  document.getElementById("voice-overlay").classList.remove("open");
 }
 
 function closeSearchIfOutside(event) {
@@ -1086,6 +1370,10 @@ function closeMemoryIfOutside(event) {
   if (event.target === document.getElementById("memory-overlay")) closeMemoryModal();
 }
 
+function closeVoiceIfOutside(event) {
+  if (event.target === document.getElementById("voice-overlay")) closeVoiceModal();
+}
+
 document.addEventListener("keydown", event => {
   if ((event.ctrlKey || event.metaKey) && event.key === "k") {
     event.preventDefault();
@@ -1093,7 +1381,175 @@ document.addEventListener("keydown", event => {
   }
   if (event.key === "Escape") closeSearch();
   if (event.key === "Escape") closeMemoryModal();
+  if (event.key === "Escape") closeVoiceModal();
 });
+
+function setVoicePanelStatus(text) {
+  if (voicePanelStatusEl) voicePanelStatusEl.textContent = text;
+}
+
+function setVoicePanelListening(active) {
+  voicePanelListening = Boolean(active);
+  if (voicePanelMicBtn) {
+    voicePanelMicBtn.classList.toggle("listening", voicePanelListening);
+    voicePanelMicBtn.textContent = voicePanelListening ? "Stop microphone" : "Start microphone";
+  }
+}
+
+function getSelectedVoiceLanguageCode() {
+  return String(voiceLanguageSelect?.value || "auto").trim() || "auto";
+}
+
+function getSelectedVoiceLanguageName() {
+  const option = voiceLanguageSelect?.selectedOptions?.[0];
+  return option ? option.textContent.trim() : "Auto-detect";
+}
+
+function syncVoiceModeButtons() {
+  const ttsToggle = document.getElementById("tts-toggle");
+  const handsfreeToggle = document.getElementById("handsfree-toggle");
+  ttsToggle?.classList.toggle("active", ttsEnabled);
+  handsfreeToggle?.classList.toggle("active", handsFreeMode);
+  if (ttsToggleLabel) ttsToggleLabel.textContent = ttsEnabled ? "Auto-speak ON" : "Auto-speak";
+  if (handsfreeToggleLabel) handsfreeToggleLabel.textContent = handsFreeMode ? "Hands-free ON" : "Hands-free";
+}
+
+function setHandsFreeIndicator(state = "idle") {
+  if (!handsfreeRing || !handsfreeStatus) return;
+
+  handsfreeRing.classList.remove("listening", "speaking");
+  handsfreeStatus.className = "handsfree-status";
+
+  if (state === "idle") {
+    handsfreeRing.classList.remove("visible");
+    handsfreeRing.textContent = "🎤";
+    handsfreeStatus.textContent = "";
+    return;
+  }
+
+  handsfreeRing.classList.add("visible");
+  if (state === "listening") {
+    handsfreeRing.textContent = "🎤";
+    handsfreeRing.classList.add("listening");
+    handsfreeStatus.textContent = "Listening...";
+    handsfreeStatus.classList.add("listening");
+  } else if (state === "speaking") {
+    handsfreeRing.textContent = "🔊";
+    handsfreeRing.classList.add("speaking");
+    handsfreeStatus.textContent = "Speaking...";
+    handsfreeStatus.classList.add("speaking");
+  } else if (state === "thinking") {
+    handsfreeRing.textContent = "⏳";
+    handsfreeStatus.textContent = "Thinking...";
+  } else {
+    handsfreeRing.textContent = "🎤";
+    handsfreeStatus.textContent = "Say something...";
+  }
+}
+
+function refreshSpeakButtons() {
+  chatEl.querySelectorAll(".speak-btn").forEach(button => {
+    const bubble = button.closest(".bubble.ai");
+    const active = isBrowserSpeaking && bubble === currentSpeechBubble;
+    button.classList.toggle("speaking", active);
+    button.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> ${active ? "Stop" : "Speak"}`;
+  });
+}
+
+function clearHandsFreeRestart() {
+  if (handsFreeRestartTimer) {
+    clearTimeout(handsFreeRestartTimer);
+    handsFreeRestartTimer = null;
+  }
+}
+
+function scheduleHandsFreeRestart(delay = 800) {
+  clearHandsFreeRestart();
+  if (!handsFreeMode) return;
+  handsFreeRestartTimer = setTimeout(() => {
+    if (!handsFreeMode || isStreaming || isListening || isBrowserSpeaking || mediaRecorder) return;
+    toggleVoice().catch(() => {});
+  }, delay);
+}
+
+function loadPreferredSpeechVoice() {
+  preferredSpeechVoice =
+    chooseSpeechSynthesisVoice("en-ZA")
+    || chooseSpeechSynthesisVoice("en-GB")
+    || chooseSpeechSynthesisVoice("en");
+}
+
+function stopSpeaking() {
+  clearHandsFreeRestart();
+  if ("speechSynthesis" in window) {
+    window.speechSynthesis.cancel();
+  }
+  isBrowserSpeaking = false;
+  currentSpeechUtterance = null;
+  currentSpeechBubble = null;
+  refreshSpeakButtons();
+  if (handsFreeMode) setHandsFreeIndicator("waiting");
+}
+
+function toggleTTS() {
+  if (handsFreeMode) {
+    ttsEnabled = true;
+    syncVoiceModeButtons();
+    return;
+  }
+  ttsEnabled = !ttsEnabled;
+  if (!ttsEnabled && !handsFreeMode) stopSpeaking();
+  syncVoiceModeButtons();
+}
+
+function startHandsFree() {
+  if (!sr && !(navigator.mediaDevices?.getUserMedia && typeof MediaRecorder !== "undefined")) {
+    setVoiceStatus("Hands-free needs microphone support in this browser.");
+    setTimeout(() => setVoiceStatus(""), 2500);
+    return;
+  }
+  handsFreeMode = true;
+  ttsEnabled = true;
+  syncVoiceModeButtons();
+  setHandsFreeIndicator("waiting");
+  scheduleHandsFreeRestart(150);
+}
+
+function stopHandsFree() {
+  handsFreeMode = false;
+  clearHandsFreeRestart();
+  if (isListening && mediaRecorder) {
+    mediaRecorder.stop();
+  } else if (isListening && sr) {
+    sr.stop();
+  }
+  stopSpeaking();
+  setHandsFreeIndicator("idle");
+  syncVoiceModeButtons();
+}
+
+function toggleHandsFree() {
+  if (handsFreeMode) stopHandsFree();
+  else startHandsFree();
+}
+
+if ("speechSynthesis" in window) {
+  window.speechSynthesis.onvoiceschanged = loadPreferredSpeechVoice;
+  loadPreferredSpeechVoice();
+}
+
+async function checkVoiceServer() {
+  try {
+    const response = await fetch(`${VOICE_API_BASE}/health`);
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "Voice server unavailable.");
+    setVoicePanelStatus(`Voice server online.\nWhisper model: ${data.whisper_model}\nPython: ${data.python}`);
+    return true;
+  } catch (error) {
+    setVoicePanelStatus(`Voice server offline.\n${error.message || error}\nMain chat voice fallback still available.`);
+    return false;
+  }
+}
 
 function formatMemoryStatus(data) {
   if (!data) return "Memory status unavailable.";
@@ -1237,6 +1693,7 @@ if (sr) {
   sr.onstart = () => {
     isListening = true;
     document.querySelectorAll("#voice-btn,#voice-btn-chat").forEach(button => button.classList.add("listening"));
+    if (handsFreeMode) setHandsFreeIndicator("listening");
     setVoiceStatus("🎤 Listening...");
   };
   sr.onresult = event => {
@@ -1257,6 +1714,10 @@ if (sr) {
   sr.onerror = event => {
     isListening = false;
     document.querySelectorAll("#voice-btn,#voice-btn-chat").forEach(button => button.classList.remove("listening"));
+    if (handsFreeMode && !isStreaming) {
+      setHandsFreeIndicator("waiting");
+      scheduleHandsFreeRestart(1200);
+    }
     setVoiceStatus(event.error === "not-allowed" ? "Mic denied" : "");
     setTimeout(() => setVoiceStatus(""), 2000);
   };
@@ -1265,24 +1726,557 @@ if (sr) {
     isListening = false;
     document.querySelectorAll("#voice-btn,#voice-btn-chat").forEach(button => button.classList.remove("listening"));
     setVoiceStatus("");
-    if (shouldSend) sendMessage();
+    if (shouldSend) {
+      if (handsFreeMode) setHandsFreeIndicator("thinking");
+      sendMessage();
+    } else if (handsFreeMode && !isBrowserSpeaking && !isStreaming) {
+      setHandsFreeIndicator("waiting");
+      scheduleHandsFreeRestart(1000);
+    }
   };
 } else {
   document.querySelectorAll("#voice-btn,#voice-btn-chat").forEach(button => { button.disabled = true; });
 }
 
-function toggleVoice() {
-  if (!sr || isStreaming) return;
-  if (isListening) {
-    sr.stop();
+function setVoiceStatus(text) {
+  document.querySelectorAll("#voice-status,#voice-status-chat").forEach(element => { element.textContent = text; });
+  if (!handsFreeMode) return;
+  if (!text) {
+    setHandsFreeIndicator(isBrowserSpeaking ? "speaking" : "waiting");
     return;
   }
+  if (/speak/i.test(text)) {
+    setHandsFreeIndicator("speaking");
+    return;
+  }
+  if (/listen|record/i.test(text)) {
+    setHandsFreeIndicator("listening");
+    return;
+  }
+  if (/transcrib|sending|replying/i.test(text)) {
+    setHandsFreeIndicator("thinking");
+  }
+}
+
+function updateVoiceButtons(active) {
+  document.querySelectorAll("#voice-btn,#voice-btn-chat").forEach(button => {
+    button.classList.toggle("listening", Boolean(active));
+  });
+}
+
+function blobToBase64(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = String(reader.result || "");
+      resolve(dataUrl.includes(",") ? dataUrl.split(",")[1] : dataUrl);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
+function normalizeVoiceReplyLanguage(language) {
+  const value = String(language || "").trim();
+  if (!value) return "";
+  return /^sepedi$/i.test(value) ? "Sepedi" : value;
+}
+
+async function transcribeRecordedAudio(blob) {
+  const audioBase64 = await blobToBase64(blob);
+  const response = await fetch("/voice/transcribe", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      audio_base64: audioBase64,
+      mime_type: blob.type || "audio/webm",
+      filename: `voice-${Date.now()}.webm`,
+    }),
+  });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error || "Voice transcription failed.");
+  return data;
+}
+
+async function startRecordedVoiceInput() {
+  if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === "undefined") {
+    return false;
+  }
+
+  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  const preferredMime = MediaRecorder.isTypeSupported("audio/webm;codecs=opus")
+    ? "audio/webm;codecs=opus"
+    : "audio/webm";
+
+  mediaChunks = [];
+  mediaRecorder = new MediaRecorder(stream, { mimeType: preferredMime });
+  mediaRecorder.ondataavailable = event => {
+    if (event.data?.size) mediaChunks.push(event.data);
+  };
+  mediaRecorder.onstop = async () => {
+    const recorder = mediaRecorder;
+    const audioBlob = new Blob(mediaChunks, { type: recorder?.mimeType || "audio/webm" });
+    stream.getTracks().forEach(track => track.stop());
+    mediaRecorder = null;
+    mediaChunks = [];
+    isListening = false;
+    updateVoiceButtons(false);
+    setVoiceStatus("Transcribing...");
+    if (handsFreeMode) setHandsFreeIndicator("thinking");
+    try {
+      const data = await transcribeRecordedAudio(audioBlob);
+      const transcript = String(data.text || "").trim();
+      if (!transcript) {
+        setVoiceStatus("No speech detected.");
+        setTimeout(() => setVoiceStatus(""), 2500);
+        return;
+      }
+      currentVoiceContext = {
+        fromVoice: true,
+        inputLanguageCode: data.language_code || "",
+        inputLanguageName: data.language_name || "",
+        preferredOutputLanguage: normalizeVoiceReplyLanguage(data.preferred_output_language || ""),
+      };
+      pendingSpokenReply = currentVoiceContext;
+      const input = getActiveInput();
+      input.value = transcript;
+      input.dispatchEvent(new Event("input"));
+      setVoiceStatus(currentVoiceContext.preferredOutputLanguage
+        ? `Replying in ${currentVoiceContext.preferredOutputLanguage}...`
+        : "Sending...");
+      sendMessage();
+    } catch (error) {
+      currentVoiceContext = null;
+      pendingSpokenReply = null;
+      setVoiceStatus(error.message || "Voice transcription failed.");
+      if (handsFreeMode) {
+        setHandsFreeIndicator("waiting");
+        scheduleHandsFreeRestart(1200);
+      }
+      setTimeout(() => setVoiceStatus(""), 3000);
+    }
+  };
+
+  mediaRecorder.start();
+  isListening = true;
+  updateVoiceButtons(true);
+  setVoiceStatus("Recording...");
+  if (handsFreeMode) setHandsFreeIndicator("listening");
+  return true;
+}
+
+function startBrowserSpeechFallback() {
+  if (!sr || isStreaming) return;
   finalTx = "";
   sr.start();
 }
 
-function setVoiceStatus(text) {
-  document.querySelectorAll("#voice-status,#voice-status-chat").forEach(element => { element.textContent = text; });
+function chooseSpeechSynthesisVoice(language) {
+  const target = String(language || "").toLowerCase();
+  const voices = window.speechSynthesis?.getVoices?.() || [];
+  if (!voices.length) return null;
+  return voices.find(voice => voice.lang?.toLowerCase().startsWith(target))
+    || voices.find(voice => target === "nso-za" && /nso|st-za|zu-za|xh-za|en-za/i.test(voice.lang || ""))
+    || voices.find(voice => /en-za/i.test(voice.lang || ""))
+    || voices[0]
+    || null;
+}
+
+function extractSpeechText(markdownText) {
+  return String(markdownText || "")
+    .replace(/<<<HTML_ARTIFACT>>>[\s\S]*?<<<END_ARTIFACT>>>/g, " ")
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/\[(.*?)\]\((.*?)\)/g, "$1")
+    .replace(/[*_>#-]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function addSpeakButton(bubble, sourceText = "") {
+  if (!bubble || !bubble.classList.contains("ai")) return;
+  const speechText = extractSpeechText(sourceText || bubble.innerText || bubble.textContent || "");
+  if (!speechText) return;
+  bubble.dataset.speechText = speechText;
+
+  let button = bubble.querySelector(".speak-btn");
+  if (!button) {
+    button = document.createElement("button");
+    button.className = "speak-btn";
+    button.type = "button";
+    button.onclick = async () => {
+      if (isBrowserSpeaking && currentSpeechBubble === bubble) {
+        stopSpeaking();
+        return;
+      }
+      await speakTextAloud(bubble.dataset.speechText || "", {
+        bubble,
+        languageCode: "en-ZA",
+        onEnd: () => {
+          if (handsFreeMode) scheduleHandsFreeRestart(600);
+        },
+      });
+    };
+    bubble.appendChild(button);
+  }
+  refreshSpeakButtons();
+}
+
+async function speakTextAloud(text, options = {}) {
+  const cleanText = extractSpeechText(text);
+  if (!cleanText || !("speechSynthesis" in window)) return false;
+
+  stopSpeaking();
+
+  const utterance = new SpeechSynthesisUtterance(cleanText.slice(0, 1800));
+  utterance.lang = options.languageCode || "en-ZA";
+  utterance.rate = 1.02;
+  utterance.pitch = 1;
+  utterance.volume = 1;
+  utterance.voice = chooseSpeechSynthesisVoice(utterance.lang) || preferredSpeechVoice || null;
+
+  currentSpeechUtterance = utterance;
+  currentSpeechBubble = options.bubble || null;
+  isBrowserSpeaking = true;
+  refreshSpeakButtons();
+  setVoiceStatus("Speaking...");
+  if (handsFreeMode) setHandsFreeIndicator("speaking");
+
+  return new Promise(resolve => {
+    utterance.onend = () => {
+      isBrowserSpeaking = false;
+      currentSpeechUtterance = null;
+      currentSpeechBubble = null;
+      refreshSpeakButtons();
+      setVoiceStatus("");
+      if (handsFreeMode) setHandsFreeIndicator("waiting");
+      if (typeof options.onEnd === "function") options.onEnd();
+      resolve(true);
+    };
+    utterance.onerror = () => {
+      isBrowserSpeaking = false;
+      currentSpeechUtterance = null;
+      currentSpeechBubble = null;
+      refreshSpeakButtons();
+      setVoiceStatus("");
+      if (handsFreeMode) setHandsFreeIndicator("waiting");
+      resolve(false);
+    };
+    window.speechSynthesis.speak(utterance);
+  });
+}
+
+async function speakReplyText(replyText, voiceContext) {
+  const cleanText = extractSpeechText(replyText);
+  if (!cleanText) return;
+
+  const preferredLanguage = normalizeVoiceReplyLanguage(
+    voiceContext?.preferredOutputLanguage || voiceContext?.inputLanguageName || ""
+  );
+  const targetLanguageCode = String(
+    voiceContext?.targetLanguageCode || languageCodeFromName(preferredLanguage) || "en"
+  ).trim().toLowerCase();
+  let spokenText = cleanText;
+
+  if (targetLanguageCode && targetLanguageCode !== "en") {
+    try {
+      const translated = await translateWithVoiceServer(cleanText, targetLanguageCode, "auto");
+      if (translated) spokenText = translated;
+    } catch {}
+  }
+
+  try {
+    const serverSpeech = await speakThroughVoiceServer(spokenText, targetLanguageCode || "en");
+    if (serverSpeech.supported && serverSpeech.audio_base64) {
+      const audio = new Audio(`data:${serverSpeech.mime_type || "audio/mpeg"};base64,${serverSpeech.audio_base64}`);
+      setVoiceStatus("Speaking...");
+      if (handsFreeMode) setHandsFreeIndicator("speaking");
+      await new Promise((resolve, reject) => {
+        audio.onended = resolve;
+        audio.onerror = reject;
+        audio.play().catch(reject);
+      });
+      setVoiceStatus("");
+      if (handsFreeMode) setHandsFreeIndicator("waiting");
+      return true;
+    }
+  } catch {}
+
+  try {
+    const response = await fetch("/voice/speak", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        text: spokenText,
+        language: preferredLanguage || "English",
+      }),
+    });
+    const data = await response.json();
+    if (data.supported && data.audio_base64) {
+      const audio = new Audio(`data:${data.mime_type || "audio/mpeg"};base64,${data.audio_base64}`);
+      setVoiceStatus("Speaking...");
+      if (handsFreeMode) setHandsFreeIndicator("speaking");
+      await new Promise((resolve, reject) => {
+        audio.onended = resolve;
+        audio.onerror = reject;
+        audio.play().catch(reject);
+      });
+      setVoiceStatus("");
+      if (handsFreeMode) setHandsFreeIndicator("waiting");
+      return true;
+    }
+  } catch {}
+
+  if ("speechSynthesis" in window) {
+    return speakTextAloud(spokenText, {
+      languageCode: targetLanguageCode === "nso"
+        ? "nso-ZA"
+        : (targetLanguageCode ? `${targetLanguageCode}-ZA` : (preferredLanguage || "en-ZA")),
+    });
+  }
+
+  setVoiceStatus(preferredLanguage
+    ? `Voice playback unavailable for ${preferredLanguage}.`
+    : "Voice playback unavailable.");
+  setTimeout(() => setVoiceStatus(""), 3000);
+  return false;
+}
+
+async function toggleVoice() {
+  if (isStreaming) return;
+
+  if (mediaRecorder && isListening) {
+    mediaRecorder.stop();
+    return;
+  }
+
+  try {
+    const started = await startRecordedVoiceInput();
+    if (started) return;
+  } catch (error) {
+    setVoiceStatus(error.message || "Microphone unavailable.");
+    setTimeout(() => setVoiceStatus(""), 2500);
+  }
+
+  if (sr) {
+    startBrowserSpeechFallback();
+    return;
+  }
+
+  document.querySelectorAll("#voice-btn,#voice-btn-chat").forEach(button => { button.disabled = true; });
+}
+
+if (!sr && (navigator.mediaDevices?.getUserMedia || typeof MediaRecorder !== "undefined")) {
+  document.querySelectorAll("#voice-btn,#voice-btn-chat").forEach(button => { button.disabled = false; });
+}
+
+async function blobToVoiceServerTranscript(blob) {
+  const audioBase64 = await blobToBase64(blob);
+  const response = await fetch(`${VOICE_API_BASE}/voice/transcribe`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      audio_base64: audioBase64,
+      mime_type: blob.type || "audio/webm",
+      filename: `voice-panel-${Date.now()}.webm`,
+      language_code: getSelectedVoiceLanguageCode(),
+    }),
+  });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error || "Voice server transcription failed.");
+  return data;
+}
+
+async function translateWithVoiceServer(text, targetLanguageCode, sourceLanguageCode = "auto") {
+  const response = await fetch(`${VOICE_API_BASE}/voice/translate`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      text,
+      source_language_code: sourceLanguageCode,
+      target_language_code: targetLanguageCode,
+    }),
+  });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error || "Translation failed.");
+  return String(data.translated_text || "").trim();
+}
+
+async function speakThroughVoiceServer(text, languageCode) {
+  const response = await fetch(`${VOICE_API_BASE}/voice/speak`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      text,
+      language_code: languageCode,
+    }),
+  });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error || "Voice server speech failed.");
+  return data;
+}
+
+async function processVoicePanelBlob(blob) {
+  setVoicePanelStatus("Transcribing with voice server...");
+  const payload = await blobToVoiceServerTranscript(blob);
+  const transcript = String(payload.text || "").trim();
+  if (!transcript) throw new Error("No speech detected.");
+
+  const selectedCode = getSelectedVoiceLanguageCode();
+  const selectedName = getSelectedVoiceLanguageName();
+  const detectedCode = String(payload.detected_language_code || "").trim();
+  const targetCode = selectedCode === "auto" ? (detectedCode || "en") : selectedCode;
+  const targetName = targetCode === detectedCode && payload.preferred_output_language
+    ? payload.preferred_output_language
+    : (selectedCode === "auto" ? (payload.detected_language_name || "English") : selectedName);
+
+  voiceTranscriptEl.value = transcript;
+  voiceTranscriptEl.dispatchEvent(new Event("input"));
+  lastVoicePanelContext = {
+    fromVoice: true,
+    inputLanguageCode: detectedCode,
+    inputLanguageName: payload.detected_language_name || languageNameFromCode(detectedCode),
+    preferredOutputLanguage: normalizeVoiceReplyLanguage(targetName),
+    processingText: payload.processing_text || transcript,
+    targetLanguageCode: targetCode,
+  };
+  setVoicePanelStatus(
+    `Transcript ready.\nDetected: ${payload.detected_language_name || languageNameFromCode(detectedCode)}\nReply language: ${targetName}`
+  );
+}
+
+function languageNameFromCode(code) {
+  const value = String(code || "").trim().toLowerCase();
+  const map = {
+    en: "English",
+    nso: "Sepedi",
+    zu: "isiZulu",
+    xh: "isiXhosa",
+    st: "Sesotho",
+    tn: "Setswana",
+    af: "Afrikaans",
+    ts: "Xitsonga",
+    ss: "siSwati",
+    ve: "Tshivenda",
+    nr: "isiNdebele",
+    sw: "Swahili",
+    fr: "French",
+    pt: "Portuguese",
+    ar: "Arabic",
+    hi: "Hindi",
+    zh: "Chinese",
+    es: "Spanish",
+    de: "German",
+  };
+  return map[value] || value || "Unknown";
+}
+
+function languageCodeFromName(name) {
+  const value = String(name || "").trim().toLowerCase();
+  const map = {
+    english: "en",
+    sepedi: "nso",
+    "sepedi (northern sotho)": "nso",
+    isizulu: "zu",
+    zulu: "zu",
+    isixhosa: "xh",
+    xhosa: "xh",
+    sesotho: "st",
+    sotho: "st",
+    setswana: "tn",
+    tswana: "tn",
+    afrikaans: "af",
+    xitsonga: "ts",
+    tsonga: "ts",
+    siswati: "ss",
+    swati: "ss",
+    tshivenda: "ve",
+    venda: "ve",
+    isindebele: "nr",
+    ndebele: "nr",
+    swahili: "sw",
+    french: "fr",
+    portuguese: "pt",
+    arabic: "ar",
+    hindi: "hi",
+    chinese: "zh",
+    spanish: "es",
+    german: "de",
+  };
+  return map[value] || "";
+}
+
+async function handleVoicePanelRecord() {
+  if (voicePanelRecorder && voicePanelListening) {
+    voicePanelRecorder.stop();
+    return;
+  }
+
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const preferredMime = MediaRecorder.isTypeSupported("audio/webm;codecs=opus")
+      ? "audio/webm;codecs=opus"
+      : "audio/webm";
+
+    voicePanelChunks = [];
+    voicePanelRecorder = new MediaRecorder(stream, { mimeType: preferredMime });
+    voicePanelRecorder.ondataavailable = event => {
+      if (event.data?.size) voicePanelChunks.push(event.data);
+    };
+    voicePanelRecorder.onstop = async () => {
+      const recorder = voicePanelRecorder;
+      const blob = new Blob(voicePanelChunks, { type: recorder?.mimeType || "audio/webm" });
+      stream.getTracks().forEach(track => track.stop());
+      voicePanelRecorder = null;
+      voicePanelChunks = [];
+      setVoicePanelListening(false);
+      try {
+        await processVoicePanelBlob(blob);
+        await sendVoicePanelTranscript();
+      } catch (error) {
+        setVoicePanelStatus(error.message || "Voice panel failed.");
+      }
+    };
+    voicePanelRecorder.start();
+    setVoicePanelListening(true);
+    setVoicePanelStatus("Recording...");
+  } catch (error) {
+    setVoicePanelStatus(error.message || "Microphone unavailable.");
+  }
+}
+
+async function sendVoicePanelTranscript() {
+  const transcript = String(voiceTranscriptEl?.value || "").trim();
+  if (!transcript || isStreaming) return;
+
+  const selectedCode = getSelectedVoiceLanguageCode();
+  const context = {
+    ...(lastVoicePanelContext || {}),
+    fromVoice: true,
+    preferredOutputLanguage: normalizeVoiceReplyLanguage(
+      lastVoicePanelContext?.preferredOutputLanguage || (selectedCode === "auto" ? "" : getSelectedVoiceLanguageName())
+    ),
+    targetLanguageCode: lastVoicePanelContext?.targetLanguageCode || (selectedCode === "auto" ? "en" : selectedCode),
+    processingText: lastVoicePanelContext?.processingText || transcript,
+  };
+
+  const input = getActiveInput();
+  input.value = transcript;
+  input.dispatchEvent(new Event("input"));
+  currentVoiceContext = {
+    fromVoice: true,
+    inputLanguageCode: context.inputLanguageCode || selectedCode,
+    inputLanguageName: context.inputLanguageName || getSelectedVoiceLanguageName(),
+    preferredOutputLanguage: context.preferredOutputLanguage,
+    processingText: context.processingText,
+  };
+  pendingSpokenReply = {
+    preferredOutputLanguage: context.preferredOutputLanguage,
+    inputLanguageName: context.inputLanguageName,
+    targetLanguageCode: context.targetLanguageCode,
+  };
+  setVoicePanelStatus(`Sending transcript...\nReply language: ${context.preferredOutputLanguage || "English"}`);
+  await sendMessage();
 }
 
 function triggerFileInput() {
@@ -1443,6 +2437,7 @@ function renderMarkdown(element, text) {
     element.innerHTML = before ? marked.parse(before) : "";
     upgradeLinks(element);
     renderArtifact(element, artifact[1].trim());
+    if (element.classList.contains("ai")) addSpeakButton(element, text);
     return;
   }
 
@@ -1461,6 +2456,7 @@ function renderMarkdown(element, text) {
     pre.appendChild(button);
   });
   element.querySelectorAll("pre code").forEach(block => hljs.highlightElement(block));
+  if (element.classList.contains("ai")) addSpeakButton(element, text);
 }
 
 function upgradeLinks(container) {
@@ -1774,6 +2770,8 @@ async function sendMessage() {
   if ((!text && !pendingFiles.length) || isStreaming) return;
 
   const fullText = text || "(see attached)";
+  const voiceContext = currentVoiceContext;
+  currentVoiceContext = null;
 
   if (!currentSession) startNewSession(fullText);
 
@@ -1805,10 +2803,10 @@ async function sendMessage() {
   pendingFiles = [];
   renderPreviews();
 
-  await streamAssistantResponse();
+  await streamAssistantResponse(voiceContext);
 }
 
-async function streamAssistantResponse() {
+async function streamAssistantResponse(voiceContext = null) {
   const aiBubble = addRow("ai");
   aiBubble.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
 
@@ -1830,7 +2828,7 @@ async function streamAssistantResponse() {
     const response = await fetch("/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages, project: currentProj, model: currentModel }),
+      body: JSON.stringify({ messages, project: currentProj, model: currentModel, voice: voiceContext }),
     });
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
@@ -1882,10 +2880,36 @@ async function streamAssistantResponse() {
     saveCurrentSession();
     renderSidebar();
     updateRetryButton();
+    let spokeReply = false;
+    if (safeResp && voiceContext && pendingSpokenReply && (voiceAutoSpeakEl?.checked ?? true)) {
+      const replyVoiceContext = pendingSpokenReply;
+      pendingSpokenReply = null;
+      spokeReply = await speakReplyText(safeResp, replyVoiceContext);
+      setVoicePanelStatus(spokeReply
+        ? `Reply delivered in ${replyVoiceContext.preferredOutputLanguage || "the requested language"}.`
+        : "Reply generated, but voice playback was unavailable.");
+      if (voiceAutoListenEl?.checked && document.getElementById("voice-overlay")?.classList.contains("open")) {
+        setTimeout(() => { handleVoicePanelRecord(); }, 700);
+      }
+    } else if (safeResp && (ttsEnabled || handsFreeMode) && !voiceContext) {
+      spokeReply = await speakTextAloud(safeResp, {
+        bubble: aiBubble,
+        languageCode: "en-ZA",
+      });
+    } else if (voiceContext) {
+      pendingSpokenReply = null;
+    } else if (!voiceContext) {
+      pendingSpokenReply = null;
+    }
+    if (handsFreeMode && !document.getElementById("voice-overlay")?.classList.contains("open")) {
+      setHandsFreeIndicator("waiting");
+      scheduleHandsFreeRestart(spokeReply ? 650 : 950);
+    }
   } catch (error) {
     clearTyping();
     aiBubble.innerHTML += `<p style="color:var(--danger)">Connection error: ${escHtml(error.message)}</p>`;
     updateRetryButton();
+    pendingSpokenReply = null;
   } finally {
     isStreaming = false;
     document.querySelectorAll("#send-btn,#send-btn-chat").forEach(button => { button.disabled = false; });
@@ -2075,6 +3099,8 @@ if (chatHistory.length) saveHistory();
 renderSidebar();
 renderPreviews();
 showEmpty();
+syncVoiceModeButtons();
+setHandsFreeIndicator("idle");
 initBackendStatus();
 </script>
 </body>
