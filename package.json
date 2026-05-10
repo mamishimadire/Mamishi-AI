@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@tavily/core": "^0.7.3",
+    "dotenv": "^17.4.2",
     "tesseract.js": "^7.0.0"
   }
 }

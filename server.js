@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const http = require("http");
 const fs = require("fs");
 const fsp = require("fs/promises");
@@ -1486,12 +1488,35 @@ function isFounderQuery(messages) {
 }
 
 function shouldAutoSearch(messages) {
-  if (!tavilyClient) return false;
+  if (!tavilyClient && !BS.tavily.on) return false;
   if (isFounderQuery(messages)) return false;
 
   const text = getEffectiveUserText(messages).toLowerCase();
   if (!text) return false;
   if (isCorrectionMessage(text) && hasDetailedUserContext(text)) return false;
+
+  const entityLookup = [
+    "who is",
+    "who are",
+    "who was",
+    "who were",
+    "tell me about",
+    "what is",
+    "what are",
+    "when did",
+    "when was",
+    "when is",
+    "where is",
+    "where are",
+    "how much is",
+    "how many",
+    "what happened",
+    "what happened to",
+    "define ",
+    "explain ",
+  ].some(term => text.startsWith(term) || text.includes(" " + term));
+
+  if (entityLookup) return true;
 
   return [
     "latest",
