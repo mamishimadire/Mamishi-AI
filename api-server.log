@@ -1,0 +1,2 @@
+MAMISHI AI API running at http://localhost:5001
+x-api-key required for /api/ask and /api/chat

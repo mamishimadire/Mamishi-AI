@@ -1,0 +1,20 @@
+
+MAMISHI AI -> http://localhost:5000
+
+SMART ROUTING:
+  Groq   -> default request path
+  Ollama -> fallback when Groq fails or hits limits
+  Tavily -> automatic web search for current/live questions
+
+Backends:
+  Gemini : gemini-1.5-flash (1 key(s), standby only)
+  Groq   : llama-3.3-70b-versatile
+  Ollama : gpt-oss:120b-cloud
+
+Tavily   : enabled
+File reading:
+  Groq   -> PDFs via PyMuPDF, images via pytesseract OCR
+  Ollama -> same as Groq
+Optional Python deps: pip install pymupdf pytesseract pillow
+Workspace: C:\Users\Mamishi.Madire\mamishi-ai-workspace
+

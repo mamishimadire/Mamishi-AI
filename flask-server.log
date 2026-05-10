@@ -1,0 +1,9 @@
+
+GEMINI_API_KEY not set.
+Run in PowerShell: $env:GEMINI_API_KEY='your-key-here'
+
+MAMISHI AI at http://localhost:5000
+Model: gemini-2.5-flash
+Workspace: C:\Users\Mamishi.Madire/mamishi-ai-workspace
+ * Serving Flask app 'app'
+ * Debug mode: off

@@ -1,0 +1,47 @@
+[
+  {
+    "id": "moz4fkt2-4oy9e6",
+    "created_at": "2026-05-10T01:55:47.606Z",
+    "keywords": [
+      "ifrs",
+      "revenue",
+      "contracts",
+      "customers",
+      "effective",
+      "annual",
+      "periods",
+      "beginning",
+      "january",
+      "2018",
+      "aspect",
+      "core",
+      "idea",
+      "practical"
+    ],
+    "prompt": "## IFRS 15 – Revenue from Contracts with Customers  \n*(Effective for annual periods beginning on or after 1 January 2018)*  \n\n| Aspect | Core Idea | Practical Take‑aways |\n|---|---|---|\n| **Objective** | Provide a single, principle‑based model for recognizing revenue that reflects the transfer of promised goods or services to a customer. | Replaces legacy standards (IAS 18, IAS 11, IFRIC 13, etc.) – all revenue now flows through the same five‑step framework. |\n| **Five‑step model** | 1. **Identify the contract** 2. **Identify performance obligations** 3. **Determine transaction price** 4. **Allocate price to obligations** 5. **Recognise revenue when (or as) each obligation is satisfied** | • Step 1: contract must be enforceable, have commercial substance, and collectability be probable. <br>• Step 2: each distinct good or service = a separate performance obligation (or a series of distinct goods/services). <br>• Step 3: variable consideration (discounts, rebates, penalties, etc.) is estimated using expected‑value or most‑likely‑outcome, with a **constraint** to prevent revenue over‑statement. <br>• Step 4: allocate using **stand‑alone selling prices** (observable market price, adju",
+    "correction": "⚠️ Important Corrections / Clarifications\n1. ❌ IFRS for SMEs section number is incorrect\n\nYou wrote:\n\nIFRS for SMEs – Section 29 Revenue\n\nThat is incorrect.\n\n✔️ Correct sections:\n\nUnder IFRS for SMEs:\n\nSection 23 = Revenue\nSection 20 = Leases\nSection 29 = Income Tax\n\nSo:\n❌ Section 29 Revenue\n✔️ Section 23 Revenue\n\nThis is the biggest correction.\n\n2. ⚠️ IFRS for SMEs does NOT fully adopt IFRS 15\n\nYour comparison slightly suggests IFRS for SMEs uses the same transfer-of-control framework as IFRS 15.\n\nThat is only partly true.\n\n✔️ Reality\n\nThe SME standard is:\n\nSimpler\nMore aligned historically with older IAS 18 concepts\nLess detailed than IFRS 15\n\nIFRS for SMEs does include ideas similar to transfer of control, but it does not fully implement the entire IFRS 15 five-step model.\n\nSo wording like:\n\n“same transfer of control concept is embedded”\n\nis acceptable generally, but academically it should be explained carefully.\n\n3. ⚠️ Transition section needs correction\n\nYou wrote:\n\nFair-value-or-cash-flow approach\n\nThis is not a recognized main transition method in IFRS 15.\n\n✔️ Correct IFRS 15 transition methods:\nFull retrospective approach\nModified retrospective approach\n\nThose are the official major methods.\n\n4. ⚠️ ISA 250 clarification\n\nYou linked ISA 250 Consideration of Laws and Regulations in an Audit heavily to contract law under IFRS 15.\n\nThis is partially true, but ISA 250 is broader:\n\nfocuses on compliance with laws and regulations\nnot specifically contract enforceability\n\nContract enforceability is more directly part of IFRS 15 contract assessment itself.\n\n5. ✔️ ISA references are appropriate\n\nYour linkage of:\n\nISA 315\nISA 330\nISA 540 Revised\nISA 240\nISA 560\nISA 600\n\nis accurate and professionally relevant.\n\nRevenue recognition is indeed one of the highest audit-risk areas.\n\n✔️ Overall Assessment\nAccuracy rating:\nIFRS 15 section → ✔️ Mostly accurate\nISA linkage → ✔️ Strong and relevant\nIFRS for SMEs → ⚠️ Mostly correct but section number wrong and framework slightly oversimplified\nBiggest correction:\n\n❌ IFRS for SMEs Section 29 Revenue\n✔️ IFRS for SMEs Section 23 Revenue\n\n✔️ Simplified Bottom Line\nIFRS 15 Revenue from Contracts with Customers = detailed revenue recognition standard using a five-step model.\nInternational Standards on Auditing guide auditors on how to test revenue and related risks.\nIFRS for SMEs uses a simpler revenue framework mainly under Section 23.\n\nYour document is strong overall, but those corrections are important if using it for:\n\nuniversity work\naudit documentation\nprofessional exams\ntechnical accounting references.",
+    "preferred_answer": "university work audit documentation professional exams technical accounting references."
+  },
+  {
+    "id": "moz1j4w6-8tcpzl",
+    "created_at": "2026-05-10T00:34:34.758Z",
+    "keywords": [
+      "recent",
+      "national",
+      "elections",
+      "south",
+      "africa",
+      "2019",
+      "african",
+      "general",
+      "election",
+      "took",
+      "place",
+      "statement",
+      "shared",
+      "partly"
+    ],
+    "prompt": "The most recent national elections in South Africa were the 2019 South African general election, which took place on May 8, 2019.",
+    "correction": "The statement you shared is partly correct but incomplete / slightly outdated depending on context.\n\nWhat is correct\nThe 2019 South African general election was indeed held on 8 May 2019.\nThat was a national election.\n\nWhat is missing / outdated\nThe most recent national election is NOT 2019 anymore.\nSouth Africa held its next general election on 29 May 2024.\n\nCorrected version:\nThe most recent national elections in South Africa were the 2024 South African general election, which took place on 29 May 2024. The previous election was held in 2019 on 8 May 2019."
+  }
+]
